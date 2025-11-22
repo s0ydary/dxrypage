@@ -157,6 +157,26 @@
             50% { opacity: 0.5; }
         }
 
+        /* BARRA DE CARGA */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #00ff00;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
         /* TERMINAL (oculta inicialmente) */
         #terminalScreen {
             display: none;
@@ -409,6 +429,11 @@
             <div class="loading" id="loading">
                 <span class="pulse">INITIALIZING SECURITY PROTOCOLS...</span>
             </div>
+            
+            <!-- BARRA DE CARGA -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
         </div>
         
         <div class="access-footer">
@@ -470,33 +495,6 @@
                     <div class="info-item delay-3" id="securityItem3">TELEGRAM: @Dxrylit</div>
                     <div class="info-item delay-4" id="securityItem4">ROBLOX: @s0y_dary</div>
                 </div>
-            </div>
-
-            <!-- INFORMACIÓN ADICIONAL 
-            <div class="content-grid">
-                <div class="content-section" id="projectsSection">
-                    <h2 class="section-title">PROJECTS</h2>
-                    <div class="info-item delay-1">SECURITY TOOLS DEVELOPMENT</div>
-                    <div class="info-item delay-2">PENETRATION TESTING FRAMEWORKS</div>
-                    <div class="info-item delay-3">NETWORK MONITORING SYSTEMS</div>
-                    <div class="info-item delay-4">CRYPTOGRAPHIC APPLICATIONS</div>
-                </div>
-
-                <div class="content-section" id="certsSection">
-                    <h2 class="section-title">CERTIFICATIONS</h2>
-                    <div class="info-item delay-1">CEH - CERTIFIED ETHICAL HACKER</div>
-                    <div class="info-item delay-2">OSCP - OFFENSIVE SECURITY</div>
-                    <div class="info-item delay-3">CISSP - SECURITY PROFESSIONAL</div>
-                    <div class="info-item delay-4">COMPTIA SECURITY+</div>
-                </div>
-
-                <div class="content-section" id="contactSection">
-                    <h2 class="section-title">CONTACT</h2>
-                    <div class="info-item delay-1">EMAIL: UNKNOWN@MODZ.COM</div>
-                    <div class="info-item delay-2">GPG: 0x1A2B3C4D5E6F7A8B</div>
-                    <div class="info-item delay-3">SIGNAL: SECURE</div>
-                    <div class="info-item delay-4">LOCATION: UNDISCLOSED</div>
-                </div> -->
             </div>
 
             <div class="command-line" id="output">
@@ -561,6 +559,26 @@
             setInterval(draw, 35);
         }
 
+        // Función para animar la barra de progreso
+        function animateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('progressContainer');
+            
+            // Mostrar el contenedor de la barra de progreso
+            progressContainer.style.display = 'block';
+            
+            // Animar la barra de progreso de 0% a 100% en 2 segundos
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width += 1;
+                    progressBar.style.width = width + '%';
+                }
+            }, 20); // 20ms * 100 = 2000ms (2 segundos)
+        }
+
         // Efecto de escritura en terminal
         function typeText(text) {
             const output = document.getElementById('outputText');
@@ -611,13 +629,6 @@
                 skillItems.forEach(item => item.classList.add('visible'));
             }, 1500);
 
-            // Secciones adicionales
-            setTimeout(() => {
-                document.getElementById('projectsSection').classList.add('visible');
-                document.getElementById('certsSection').classList.add('visible');
-                document.getElementById('contactSection').classList.add('visible');
-            }, 1800);
-
             // Footer
             setTimeout(() => {
                 document.getElementById('mainFooter').classList.add('visible');
@@ -660,6 +671,9 @@
             // Mostrar mensaje de carga
             loading.style.display = "block";
             
+            // Mostrar y animar la barra de progreso
+            animateProgressBar();
+            
             // Reproducir música automáticamente
             music.play().catch(e => {
                 console.log("La reproducción automática fue bloqueada: ", e);
@@ -675,7 +689,7 @@
             showTerminal();
             
             function showTerminal() {
-                // Transición después de 2 segundos
+                // Transición después de 2 segundos (cuando la barra de carga llega al 100%)
                 setTimeout(() => {
                     accessScreen.style.opacity = "0";
                     setTimeout(() => {
