@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNKNOWN MODZ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 0, 0.5);
+            box-shadow: 0 0 10px #00ff00;
+            animation: scan 3s linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        /* PANTALLA DE ACCESO */
+        #accessScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            z-index: 10;
+            transition: opacity 1s ease;
+        }
+
+        .access-container {
+            text-align: center;
+            padding: 30px;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            box-shadow: 0 0 25px #00ff00, 0 0 50px rgba(0, 255, 0, 0.3);
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .glitch {
+            font-size: 3.5em;
+            color: #00ff00; /* CAMBIADO A VERDE NEÓN */
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; /* CAMBIADO A VERDE NEÓN */
+            animation: glitch 3s infinite;
+            margin-bottom: 20px;
+            letter-spacing: 5px;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            color: #00ff00; /* CAMBIADO A VERDE NEÓN */
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .enter-btn {
+            background: transparent;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 3px;
+        }
+
+        .enter-btn:hover {
+            background: rgba(0, 255, 0, 0.1);
+            box-shadow: 0 0 20px #00ff00;
+            transform: scale(1.05);
+        }
+
+        .enter-btn:active {
+            transform: scale(0.98);
+        }
+
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .enter-btn:hover::before {
+            left: 100%;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #00ff00; /* CAMBIADO A VERDE NEÓN */
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* TERMINAL (oculta inicialmente) */
+        #terminalScreen {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .terminal {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            box-shadow: 0 0 20px #00ff00, 0 0 40px rgba(0, 255, 0, 0.2);
+            background: rgba(0, 0, 0, 0.85);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.8s ease;
+        }
+
+        .header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .command-line {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #00ff00;
+            border-right: 1px solid #00ff00;
+            border-radius: 3px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.6s ease;
+        }
+
+        .command-line.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .prompt {
+            color: #0080ff; /* MANTENIDO AZUL */
+            font-weight: bold;
+        }
+
+        .typing {
+            overflow: hidden;
+            border-right: 3px solid #00ff00;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00ff00 }
+        }
+
+        /* NUEVO ESTILO PARA LAS SECCIONES DE LA IMAGEN */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .content-section {
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            padding: 25px;
+            transition: all 0.5s ease;
+            min-height: 200px;
+            opacity: 0;
+            transform: scale(0.9);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+        }
+
+        .content-section.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .content-section:hover {
+            box-shadow: 0 0 20px #00ff00, 0 0 40px rgba(0, 255, 0, 0.1);
+            transform: translateY(-5px) scale(1.02);
+            border-color: #00ff00;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #00ff00; /* MANTENIDO AZUL */
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .info-item {
+            margin: 12px 0;
+            padding: 10px;
+            border-left: 3px solid #00ff00; /* MANTENIDO AZUL */
+            border-right: 1px solid #00ff00;
+            border-radius: 3px;
+            background: rgba(0, 255, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+
+        .info-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .info-item:hover {
+            background: rgba(0, 255, 0, 0.2);
+            border-left: 3px solid #00ff00;
+            transform: translateX(5px);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .skill-item {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #00ff00;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .skill-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .skill-item:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 15px #00ff00;
+            transform: scale(1.05);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            border-top: 2px solid #00ff00;
+            border-radius: 3px;
+            font-size: 0.8em;
+            color: #00ff00; /* MANTENIDO AZUL */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .footer.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .access-footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            color: #00ff00; /* CAMBIADO A VERDE NEÓN */
+            padding: 10px;
+            border-top: 1px solid #00ff00;
+        }
+
+        /* Audio oculto pero funcional */
+        .audio-container {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .glitch {
+                font-size: 2.5em;
+            }
+            
+            .access-container {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+
+        /* Retrasos para animaciones escalonadas */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- FONDOS COMPARTIDOS -->
+    <div class="matrix-bg" id="matrixBg"></div>
+    <div class="scan-line"></div>
+
+    <!-- PANTALLA DE ACCESO -->
+    <div id="accessScreen">
+        <div class="access-container">
+            <h1 class="glitch">SYSTEM ACCESS</h1>
+            <p class="subtitle">SECURE TERMINAL V1</p>
+            
+            <button class="enter-btn" id="enterBtn">ENTER SYSTEM</button>
+            
+            <div class="loading" id="loading">
+                <span class="pulse">INITIALIZING SECURITY PROTOCOLS...</span>
+            </div>
+        </div>
+        
+        <div class="access-footer">
+            Created by: @Dxry
+        </div>
+    </div>
+
+    <!-- TERMINAL PRINCIPAL -->
+    <div id="terminalScreen">
+        <div class="terminal">
+            <div class="header" id="mainHeader">
+                <h1 class="glitch">DXRY DEV</h1>
+                <p>> A Noob Dev 😔 <</p>
+            </div>
+
+            <div class="command-line" id="commandLine1">
+                <span class="prompt">SECURITY:~$ </span>
+                <span class="typing">100% safe</span>
+            </div>
+
+            <div class="command-line" id="commandLine2">
+                <span class="prompt">root@msg.from.me:~$ </span>
+                <span>welcome to my page</span>
+            </div>
+
+            <!-- CONTENIDO DE LA IMAGEN -->
+            <div class="content-grid">
+                <!-- ABOUT ME -->
+                <div class="content-section" id="aboutSection">
+                    <h2 class="section-title">ABOUT ME</h2>
+                    <div class="info-item delay-1" id="aboutItem1">
+                        <strong>NICK NAME</strong><br>
+                        DXRY
+                    </div>
+                    <div class="info-item delay-2" id="aboutItem2">
+                        <strong>SPECIALIZATION</strong><br>
+                        DEVELOPER
+                    </div>
+                    <div class="info-item delay-3" id="aboutItem3">
+                        <strong>EXPERIENCE</strong><br>
+                        NOOB
+                    </div>
+                </div>
+
+                <!-- MY KNOWLEDGE -->
+                <div class="content-section" id="knowledgeSection">
+                    <h2 class="section-title">MY KNOWLEDGE</h2>
+                    <div class="skills-grid">
+                        <div class="skill-item delay-1" id="skill1">LUA</div>
+                        <div class="skill-item delay-2" id="skill2">LUAU</div>
+                    </div>
+                </div>
+
+                <!-- NETWORK SECURITY -->
+                <div class="content-section" id="securitySection">
+                    <h2 class="section-title">CONTACT</h2>
+                    <div class="info-item delay-1" id="securityItem1">EMAIL: soydariff@gmail.com</div>
+                    <div class="info-item delay-2" id="securityItem2">DISCORD: @s0y_dxry</div>
+                    <div class="info-item delay-3" id="securityItem3">TELEGRAM: @Dxrylit</div>
+                    <div class="info-item delay-4" id="securityItem4">ROBLOX: @s0y_dary</div>
+                </div>
+            </div>
+
+            <!-- INFORMACIÓN ADICIONAL 
+            <div class="content-grid">
+                <div class="content-section" id="projectsSection">
+                    <h2 class="section-title">PROJECTS</h2>
+                    <div class="info-item delay-1">SECURITY TOOLS DEVELOPMENT</div>
+                    <div class="info-item delay-2">PENETRATION TESTING FRAMEWORKS</div>
+                    <div class="info-item delay-3">NETWORK MONITORING SYSTEMS</div>
+                    <div class="info-item delay-4">CRYPTOGRAPHIC APPLICATIONS</div>
+                </div>
+
+                <div class="content-section" id="certsSection">
+                    <h2 class="section-title">CERTIFICATIONS</h2>
+                    <div class="info-item delay-1">CEH - CERTIFIED ETHICAL HACKER</div>
+                    <div class="info-item delay-2">OSCP - OFFENSIVE SECURITY</div>
+                    <div class="info-item delay-3">CISSP - SECURITY PROFESSIONAL</div>
+                    <div class="info-item delay-4">COMPTIA SECURITY+</div>
+                </div>
+
+                <div class="content-section" id="contactSection">
+                    <h2 class="section-title">CONTACT</h2>
+                    <div class="info-item delay-1">EMAIL: UNKNOWN@MODZ.COM</div>
+                    <div class="info-item delay-2">GPG: 0x1A2B3C4D5E6F7A8B</div>
+                    <div class="info-item delay-3">SIGNAL: SECURE</div>
+                    <div class="info-item delay-4">LOCATION: UNDISCLOSED</div>
+                </div> -->
+            </div>
+
+            <div class="command-line" id="output">
+                <span class="prompt">output:~$ </span>
+                <span id="outputText">System ready - Select any skill to view details</span>
+            </div>
+
+            <div class="footer" id="mainFooter">
+                <p>Dxry DEV © 2025 | DEVELOPER</p>
+                <p>FOR EDUCATIONAL PURPOSES ONLY</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO OCULTO -->
+    <div class="audio-container">
+        <audio id="bgMusic" loop>
+            <source src="https://github.com/s0ydary/Test/raw/refs/heads/main/Prime(256k).mp3" type="audio/mpeg">
+            Tu navegador no soporta audio HTML5.
+        </audio>
+    </div>
+
+    <script>
+        // Efecto Matrix en el fondo
+        function createMatrix() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const matrixBg = document.getElementById('matrixBg');
+            matrixBg.appendChild(canvas);
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const chars = "01アイウエオカキクケコABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const charArray = chars.split("");
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = "#00ff00";
+                ctx.font = fontSize + "px monospace";
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            setInterval(draw, 35);
+        }
+
+        // Efecto de escritura en terminal
+        function typeText(text) {
+            const output = document.getElementById('outputText');
+            output.textContent = '';
+            
+            let i = 0;
+            const typing = setInterval(() => {
+                if (i < text.length) {
+                    output.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                }
+            }, 50);
+        }
+
+        // Función para activar animaciones de aparición
+        function activateAnimations() {
+            // Elementos principales
+            setTimeout(() => {
+                document.getElementById('mainHeader').classList.add('visible');
+            }, 100);
+
+            setTimeout(() => {
+                document.getElementById('commandLine1').classList.add('visible');
+            }, 300);
+
+            setTimeout(() => {
+                document.getElementById('commandLine2').classList.add('visible');
+            }, 600);
+
+            // Secciones principales
+            setTimeout(() => {
+                document.getElementById('aboutSection').classList.add('visible');
+                document.getElementById('knowledgeSection').classList.add('visible');
+                document.getElementById('securitySection').classList.add('visible');
+            }, 900);
+
+            // Items individuales con delays escalonados
+            const infoItems = document.querySelectorAll('.info-item');
+            const skillItems = document.querySelectorAll('.skill-item');
+            
+            setTimeout(() => {
+                infoItems.forEach(item => item.classList.add('visible'));
+            }, 1200);
+
+            setTimeout(() => {
+                skillItems.forEach(item => item.classList.add('visible'));
+            }, 1500);
+
+            // Secciones adicionales
+            setTimeout(() => {
+                document.getElementById('projectsSection').classList.add('visible');
+                document.getElementById('certsSection').classList.add('visible');
+                document.getElementById('contactSection').classList.add('visible');
+            }, 1800);
+
+            // Footer
+            setTimeout(() => {
+                document.getElementById('mainFooter').classList.add('visible');
+            }, 2100);
+        }
+
+        // Interactividad para los skill items
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillItems = document.querySelectorAll('.skill-item, .info-item');
+            skillItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const skillName = this.textContent;
+                    typeText(`Accessing ${skillName} information...`);
+                    
+                    // Efecto visual al hacer clic
+                    this.style.background = 'rgba(0, 255, 0, 0.3)';
+                    this.style.boxShadow = '0 0 15px #00ff00';
+                    setTimeout(() => {
+                        this.style.background = '';
+                        this.style.boxShadow = '';
+                    }, 500);
+                });
+            });
+        });
+
+        // Transición entre pantallas
+        document.getElementById('enterBtn').addEventListener('click', function() {
+            const music = document.getElementById('bgMusic');
+            const loading = document.getElementById('loading');
+            const button = document.getElementById('enterBtn');
+            const accessScreen = document.getElementById('accessScreen');
+            const terminalScreen = document.getElementById('terminalScreen');
+            
+            // Cambiar texto del botón
+            button.textContent = "ACCESS GRANTED";
+            button.style.background = "rgba(0, 255, 0, 0.2)";
+            button.style.cursor = "default";
+            button.disabled = true;
+            
+            // Mostrar mensaje de carga
+            loading.style.display = "block";
+            
+            // Reproducir música automáticamente
+            music.play().catch(e => {
+                console.log("La reproducción automática fue bloqueada: ", e);
+                button.textContent = "CLICK TO PLAY MUSIC";
+                button.disabled = false;
+                button.onclick = function() {
+                    music.play();
+                    showTerminal();
+                };
+                return;
+            });
+            
+            showTerminal();
+            
+            function showTerminal() {
+                // Transición después de 2 segundos
+                setTimeout(() => {
+                    accessScreen.style.opacity = "0";
+                    setTimeout(() => {
+                        accessScreen.style.display = "none";
+                        terminalScreen.style.display = "block";
+                        setTimeout(() => {
+                            terminalScreen.style.opacity = "1";
+                            // Activar animaciones después de mostrar la terminal
+                            activateAnimations();
+                        }, 50);
+                    }, 1000);
+                }, 2000);
+            }
+        });
+
+        // Inicializar efectos cuando la página cargue
+        window.addEventListener('load', function() {
+            createMatrix();
+        });
+
+        // Ajustar canvas cuando cambie el tamaño de la ventana
+        window.addEventListener('resize', function() {
+            const canvas = document.querySelector('canvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+    </script>
+</body>
+</html>
