@@ -47,7 +47,7 @@
             100% { top: 100%; }
         }
 
-        /* PANTALLA DE ACCESO */
+        /* PANTALLA DE ACCESO - TAMAÑO INTERMEDIO */
         #accessScreen {
             position: fixed;
             top: 0;
@@ -64,20 +64,23 @@
 
         .access-container {
             text-align: center;
-            padding: 30px;
+            padding: 25px 30px; /* Intermedio entre grande y pequeño */
             border: 2px solid #00ff00;
             border-radius: 5px;
             box-shadow: 0 0 25px #00ff00, 0 0 50px rgba(0, 255, 0, 0.3);
             background: rgba(0, 0, 0, 0.9);
+            max-width: 400px; /* Tamaño intermedio */
+            width: 85%; /* Ancho relativo */
+            margin: 0 auto;
         }
 
         .glitch {
-            font-size: 3.5em;
-            color: #00ff00; /* CAMBIADO A VERDE NEÓN */
-            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; /* CAMBIADO A VERDE NEÓN */
+            font-size: 2.8em; /* Intermedio entre 3.5em y 2.2em */
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
             animation: glitch 3s infinite;
-            margin-bottom: 20px;
-            letter-spacing: 5px;
+            margin-bottom: 20px; /* Intermedio */
+            letter-spacing: 4px; /* Intermedio */
         }
 
         @keyframes glitch {
@@ -89,9 +92,9 @@
         }
 
         .subtitle {
-            font-size: 1.2em;
-            margin-bottom: 40px;
-            color: #00ff00; /* CAMBIADO A VERDE NEÓN */
+            font-size: 1.1em; /* Intermedio */
+            margin-bottom: 35px; /* Intermedio */
+            color: #00ff00;
             animation: blink 2s infinite;
         }
 
@@ -104,8 +107,8 @@
             background: transparent;
             color: #00ff00;
             border: 2px solid #00ff00;
-            padding: 15px 40px;
-            font-size: 1.2em;
+            padding: 14px 35px; /* Intermedio */
+            font-size: 1.1em; /* Intermedio */
             font-family: 'Courier New', monospace;
             cursor: pointer;
             position: relative;
@@ -143,9 +146,9 @@
 
         .loading {
             display: none;
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #00ff00; /* CAMBIADO A VERDE NEÓN */
+            margin-top: 20px; /* Intermedio */
+            font-size: 0.9em; /* Intermedio */
+            color: #00ff00;
         }
 
         .pulse {
@@ -160,10 +163,10 @@
         /* BARRA DE CARGA */
         .progress-container {
             width: 100%;
-            height: 6px;
+            height: 5px; /* Intermedio */
             background: rgba(0, 255, 0, 0.1);
             border-radius: 3px;
-            margin-top: 20px;
+            margin-top: 20px; /* Intermedio */
             overflow: hidden;
             display: none;
         }
@@ -197,7 +200,7 @@
         .header {
             text-align: center;
             margin-bottom: 30px;
-            padding: 25px;
+            padding: 25px; /* Mantenido */
             border: 2px solid #00ff00;
             border-radius: 5px;
             box-shadow: 0 0 20px #00ff00, 0 0 40px rgba(0, 255, 0, 0.2);
@@ -214,8 +217,8 @@
 
         .command-line {
             background: rgba(0, 255, 0, 0.1);
-            padding: 15px;
-            margin: 10px 0;
+            padding: 15px; /* Mantenido */
+            margin: 10px 0; /* Mantenido */
             border-left: 4px solid #00ff00;
             border-right: 1px solid #00ff00;
             border-radius: 3px;
@@ -230,7 +233,7 @@
         }
 
         .prompt {
-            color: #0080ff; /* MANTENIDO AZUL */
+            color: #0080ff;
             font-weight: bold;
         }
 
@@ -251,24 +254,24 @@
             50% { border-color: #00ff00 }
         }
 
-        /* NUEVO ESTILO PARA LAS SECCIONES DE LA IMAGEN */
+        /* UNA SOLA COLUMNA EN TODOS LOS DISPOSITIVOS */
         .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
+            display: block;
+            margin: 30px 0; /* Mantenido */
         }
 
         .content-section {
             background: rgba(0, 0, 0, 0.85);
             border: 2px solid #00ff00;
             border-radius: 5px;
-            padding: 25px;
+            padding: 25px; /* Mantenido */
             transition: all 0.5s ease;
-            min-height: 200px;
+            min-height: auto;
+            margin-bottom: 25px; /* Mantenido */
             opacity: 0;
             transform: scale(0.9);
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+            width: 100%;
         }
 
         .content-section.visible {
@@ -283,20 +286,20 @@
         }
 
         .section-title {
-            font-size: 1.5em;
-            color: #00ff00; /* MANTENIDO AZUL */
-            margin-bottom: 20px;
+            font-size: 1.5em; /* Mantenido */
+            color: #00ff00;
+            margin-bottom: 20px; /* Mantenido */
             text-align: center;
             border-bottom: 2px solid #00ff00;
-            padding-bottom: 12px;
+            padding-bottom: 12px; /* Mantenido */
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .info-item {
-            margin: 12px 0;
-            padding: 10px;
-            border-left: 3px solid #00ff00; /* MANTENIDO AZUL */
+            margin: 12px 0; /* Mantenido */
+            padding: 10px; /* Mantenido */
+            border-left: 3px solid #00ff00;
             border-right: 1px solid #00ff00;
             border-radius: 3px;
             background: rgba(0, 255, 0, 0.1);
@@ -320,13 +323,13 @@
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 15px;
+            gap: 12px; /* Mantenido */
+            margin-top: 15px; /* Mantenido */
         }
 
         .skill-item {
             background: rgba(0, 255, 0, 0.1);
-            padding: 12px;
+            padding: 12px; /* Mantenido */
             text-align: center;
             border: 2px solid #00ff00;
             border-radius: 3px;
@@ -349,12 +352,12 @@
 
         .footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 25px;
+            margin-top: 40px; /* Mantenido */
+            padding: 25px; /* Mantenido */
             border-top: 2px solid #00ff00;
             border-radius: 3px;
-            font-size: 0.8em;
-            color: #00ff00; /* MANTENIDO AZUL */
+            font-size: 0.8em; /* Mantenido */
+            color: #00ff00;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.8s ease;
@@ -368,12 +371,12 @@
 
         .access-footer {
             position: absolute;
-            bottom: 20px;
+            bottom: 20px; /* Mantenido */
             width: 100%;
             text-align: center;
-            font-size: 0.8em;
-            color: #00ff00; /* CAMBIADO A VERDE NEÓN */
-            padding: 10px;
+            font-size: 0.8em; /* Mantenido */
+            color: #00ff00;
+            padding: 10px; /* Mantenido */
             border-top: 1px solid #00ff00;
         }
 
@@ -384,23 +387,25 @@
             pointer-events: none;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .skills-grid {
-                grid-template-columns: repeat(2, 1fr);
+        /* RESPONSIVE ADICIONAL PARA TELÉFONOS PEQUEÑOS */
+        @media (max-width: 480px) {
+            .access-container {
+                padding: 20px 25px; /* Un poco más pequeño en móviles muy pequeños */
+                max-width: 350px;
             }
             
             .glitch {
-                font-size: 2.5em;
+                font-size: 2.2em;
+                letter-spacing: 3px;
             }
             
-            .access-container {
-                margin: 20px;
-                padding: 20px;
+            .subtitle {
+                font-size: 0.9em;
+            }
+            
+            .enter-btn {
+                padding: 12px 30px;
+                font-size: 1em;
             }
         }
 
@@ -418,7 +423,7 @@
     <div class="matrix-bg" id="matrixBg"></div>
     <div class="scan-line"></div>
 
-    <!-- PANTALLA DE ACCESO -->
+    <!-- PANTALLA DE ACCESO CON TAMAÑO INTERMEDIO -->
     <div id="accessScreen">
         <div class="access-container">
             <h1 class="glitch">SYSTEM ACCESS</h1>
@@ -459,7 +464,7 @@
                 <span>welcome to my page</span>
             </div>
 
-            <!-- CONTENIDO DE LA IMAGEN -->
+            <!-- CONTENIDO EN UNA SOLA COLUMNA -->
             <div class="content-grid">
                 <!-- ABOUT ME -->
                 <div class="content-section" id="aboutSection">
@@ -487,7 +492,7 @@
                     </div>
                 </div>
 
-                <!-- NETWORK SECURITY -->
+                <!-- CONTACT -->
                 <div class="content-section" id="securitySection">
                     <h2 class="section-title">CONTACT</h2>
                     <div class="info-item delay-1" id="securityItem1">EMAIL: soydariff@gmail.com</div>
@@ -610,12 +615,18 @@
                 document.getElementById('commandLine2').classList.add('visible');
             }, 600);
 
-            // Secciones principales
+            // Secciones principales (ahora en orden vertical)
             setTimeout(() => {
                 document.getElementById('aboutSection').classList.add('visible');
-                document.getElementById('knowledgeSection').classList.add('visible');
-                document.getElementById('securitySection').classList.add('visible');
             }, 900);
+
+            setTimeout(() => {
+                document.getElementById('knowledgeSection').classList.add('visible');
+            }, 1200);
+
+            setTimeout(() => {
+                document.getElementById('securitySection').classList.add('visible');
+            }, 1500);
 
             // Items individuales con delays escalonados
             const infoItems = document.querySelectorAll('.info-item');
@@ -623,16 +634,16 @@
             
             setTimeout(() => {
                 infoItems.forEach(item => item.classList.add('visible'));
-            }, 1200);
+            }, 1800);
 
             setTimeout(() => {
                 skillItems.forEach(item => item.classList.add('visible'));
-            }, 1500);
+            }, 2100);
 
             // Footer
             setTimeout(() => {
                 document.getElementById('mainFooter').classList.add('visible');
-            }, 2100);
+            }, 2400);
         }
 
         // Interactividad para los skill items
