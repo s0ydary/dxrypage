@@ -35,10 +35,10 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 2px;
+            height: 3.5px;
             background: rgba(0, 255, 0, 0.5);
-            box-shadow: 0 0 10px #00ff00;
-            animation: scan 3s linear infinite;
+            box-shadow: 0 0 20px #00ff00;
+            animation: scan 5.5s linear infinite;
             z-index: 2;
         }
 
@@ -52,14 +52,14 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100%; 
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #000;
             z-index: 10;
-            transition: opacity 1s ease;
+            transition: opacity 1.4s ease;
         }
 
         .access-container {
@@ -533,7 +533,7 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
-            const chars = "01アイウエオカキクケコABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const chars = "01";
             const charArray = chars.split("");
             const fontSize = 14;
             const columns = canvas.width / fontSize;
@@ -581,7 +581,7 @@
                     width += 1;
                     progressBar.style.width = width + '%';
                 }
-            }, 20); // 20ms * 100 = 2000ms (2 segundos)
+            }, 49); // 20ms * 100 = 2000ms (2 segundos)
         }
 
         // Efecto de escritura en terminal
@@ -712,7 +712,7 @@
                             activateAnimations();
                         }, 50);
                     }, 1000);
-                }, 2000);
+                }, 5000);
             }
         });
 
